@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>MMIC CRM 포트폴리오 — 박솔지</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: #e6e6f5;
+    color: #1a1a1a;
+    padding: 40px 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .cover {
+    text-align: center;
+    padding: 30px 20px 40px;
+    margin-bottom: 30px;
+  }
+  .cover h1 {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #1a1a1a;
+  }
+  .cover p {
+    margin-top: 10px;
+    color: #555;
+    font-size: 15px;
+  }
+  .section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 0;
+    border-top: 1px solid #c9c9e0;
+  }
+  .section.reverse .text-area { order: 2; }
+  .section.reverse .visual-area { order: 1; }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+  }
+  .section-title .num {
+    color: #1a1a1a;
+    margin-right: 6px;
+  }
+  .bullet-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .bullet-list > li {
+    margin-bottom: 18px;
+    font-size: 15px;
+    font-weight: 600;
+    position: relative;
+    padding-left: 14px;
+  }
+  .bullet-list > li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #1a1a1a;
+    font-weight: 900;
+  }
+  .bullet-list .sub {
+    display: block;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333;
+    margin-top: 6px;
+    padding-left: 14px;
+    position: relative;
+  }
+  .bullet-list .sub::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #555;
+  }
+  .hl-blue { color: #3b3bff; font-weight: 800; }
+  .hl-purple { color: #6b4de6; font-weight: 800; }
+  .hl-pink { color: #e63d82; font-weight: 800; }
+  .visual-area {
+    background: #fff;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .visual-area.dark {
+    background: #111;
+    color: #fff;
+  }
+  .visual-header {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+  canvas { max-width: 100%; }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .kpi-box {
+    background: #f5f5fb;
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+  .kpi-label {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 6px;
+  }
+  .kpi-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #3b3bff;
+  }
+  .kpi-delta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .donut-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+  }
+  .donut-center {
+    text-align: center;
+    font-weight: 800;
+  }
+  .donut-center .num {
+    font-size: 28px;
+  }
+  .donut-center .label {
+    font-size: 12px;
+    color: #555;
+  }
+  @media (max-width: 820px) {
+    .section { grid-template-columns: 1fr; }
+    .section.reverse .text-area { order: 1; }
+    .section.reverse .visual-area { order: 2; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="cover">
+    <h1>MMIC · CRM 전략 운영 포트폴리오</h1>
+    <p>브랜드 마케팅부 · 박솔지 · 2025.08 – 2026.01</p>
+  </div>
+
+  <!-- 01. CRM 통합 운영 전략 고도화 -->
+  <div class="section">
+    <div class="visual-area">
+      <div class="visual-header">Off-site CRM KPI · 상반기 vs 하반기</div>
+      <canvas id="chart1" height="180"></canvas>
+      <div class="kpi-grid">
+        <div class="kpi-box">
+          <div class="kpi-label">CTR</div>
+          <div class="kpi-value">8.10% → 15.42%</div>
+          <div class="kpi-delta">+90.4% (약 1.9배)</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">CVR</div>
+          <div class="kpi-value">0.21% → 2.77%</div>
+          <div class="kpi-delta">약 13배 개선</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">ROAS</div>
+          <div class="kpi-value">55% → 2,033%</div>
+          <div class="kpi-delta">약 36.6배</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">결제 건수</div>
+          <div class="kpi-value">7건 → 325건</div>
+          <div class="kpi-delta">약 46배</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-area">
+      <div class="section-title"><span class="num">01.</span> 데이터 기반 CRM 운영 전략 고도화</div>
+      <ul class="bullet-list">
+        <li>오프사이트 CRM <span class="hl-blue">CTR +90.4%</span> · <span class="hl-blue">CVR 약 13배</span> 개선
+          <span class="sub">상반기 성과 분석으로 "유입 대비 저전환" 한계 진단 후 전략 재정비</span>
+        </li>
+        <li><span class="hl-purple">ROAS 55% → 2,033%</span> (약 36.6배 성장)
+          <span class="sub">발송 구조 · 시간대 · 개인화 변수 통합 재설계로 수익성 개선</span>
+        </li>
+        <li>KPI 기반 <span class="hl-blue">월 단위 성과 리뷰 사이클</span> 구축
+          <span class="sub">CTR / CVR / ROAS 지표 모니터링을 통한 실행-검증-개선 루프 정착</span>
+        </li>
+        <li>CRM 매출 <span class="hl-purple">60만 원 → 5,378만 원</span> (약 88배)
+          <span class="sub">결제 7건 → 325건으로 비효율 구조를 성과 중심 구조로 전환</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 02. 행동 기반 세그먼트 개인화 -->
+  <div class="section reverse">
+    <div class="text-area">
+      <div class="section-title"><span class="num">02.</span> 행동 기반 세그먼트 개인화 설계</div>
+      <ul class="bullet-list">
+        <li><span class="hl-blue">5개 행동 세그먼트</span> 정의 및 차별화 운영
+          <span class="sub">구매 직후 · 장바구니 보유 · 주문서 미결제 · 재구매 · 특정 상품 관심</span>
+        </li>
+        <li>평균 전환율 <span class="hl-purple">0.46% → 4.56% (약 891% 개선)</span>
+          <span class="sub">세그먼트별 메시지·개인화 변수·발송 시점 최적화</span>
+        </li>
+        <li>발송 시간대 <span class="hl-blue">12·2·5·6시 분산 → 18–20시 집중</span>
+          <span class="sub">업종 벤치마크(뷰저블·업종 리포트) 기반 고전환 시간대 재편</span>
+        </li>
+        <li>카카오톡 CRM CTR <span class="hl-purple">17.4% → 20.5%</span>
+          <span class="sub">콘텐츠팀·패션영업부 아이데이션 기반 톤·구조 개선</span>
+        </li>
+      </ul>
+    </div>
+    <div class="visual-area">
+      <div class="visual-header">세그먼트별 CVR 및 월별 추이</div>
+      <canvas id="chart2" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- 03. CRM 자동화 솔루션 도입 -->
+  <div class="section">
+    <div class="visual-area">
+      <div class="visual-header">CRM 자동화 솔루션 도입 전 · 후</div>
+      <canvas id="chart3" height="220"></canvas>
+      <div class="kpi-grid">
+        <div class="kpi-box">
+          <div class="kpi-label">CRM 매출</div>
+          <div class="kpi-value">793만 → 4,584만</div>
+          <div class="kpi-delta">약 5.8배 ↑</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-label">평균 CVR</div>
+          <div class="kpi-value">1.5% → 4.6%</div>
+          <div class="kpi-delta">약 3배 ↑</div>
+        </div>
+      </div>
+    </div>
+    <div class="text-area">
+      <div class="section-title"><span class="num">03.</span> CRM 자동화 솔루션 도입 · 운영 효율화</div>
+      <ul class="bullet-list">
+        <li>CRM <span class="hl-blue">자동화 솔루션 도입</span>으로 개인화 운영 전면 전환
+          <span class="sub">세그먼트 자동 추출 + 동적 개인화 변수·이미지 적용</span>
+        </li>
+        <li>매출 <span class="hl-purple">793만 원 → 4,584만 원 (약 5.8배)</span>
+          <span class="sub">도입 전(8–10월) 대비 도입 후 기준 · CVR 1.5% → 4.6%</span>
+        </li>
+        <li>온사이트 배너 구조 리디자인
+          <span class="sub">비회원 가입 배너 CTR 8% → 14% / 시작 안내 배너 평균 23% CTR 유지</span>
+        </li>
+        <li>소셜 프루프 배너 전환으로 <span class="hl-blue">CVR 0% → 1.34%</span>
+          <span class="sub">연관 상품 추천 → 고객 관심 상품 기반 소셜 프루프로 구조 개선</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 04. 시즌 프로모션 운영 -->
+  <div class="section reverse">
+    <div class="text-area">
+      <div class="section-title"><span class="num">04.</span> 시즌 프로모션 · 크로스펑셔널 협업 운영</div>
+      <ul class="bullet-list">
+        <li><span class="hl-blue">RED FRIDAY (10/30–11/17)</span> 최대 CVR 14%
+          <span class="sub">패션영업부와 일별 재고 연동 · 재고 10개 이하 장바구니 개인화 LMS</span>
+        </li>
+        <li><span class="hl-purple">OFFDAY (12/19·1/5) 최대 CVR 23.8%</span>
+          <span class="sub">일반 이커머스 CRM 평균(1–3%) 대비 약 8–20배 · 개인별 쿠폰·적립금 적용가 결합</span>
+        </li>
+        <li>데일리 스크럼 기반 <span class="hl-blue">부서 협업 구조</span> 운영
+          <span class="sub">재고 · 광고 · 자사몰 UI/UX 통합 논의로 성과 사이클 단축</span>
+        </li>
+        <li>개인 OKR <span class="hl-purple">재구매 120건 목표 초과 달성 (114/100건 액션)</span>
+          <span class="sub">12월 3–4주 부서 OKR 초과 달성 기여 · 1월 CVR 7.05% 월 최고치</span>
+        </li>
+      </ul>
+    </div>
+    <div class="visual-area">
+      <div class="visual-header">월별 CVR 추이 · 시즌 프로모션 하이라이트</div>
+      <canvas id="chart4" height="220"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<script>
+Chart.defaults.font.family = "'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif";
+Chart.defaults.color = '#1a1a1a';
+
+// 01 상/하반기 비교 (로그 스케일로 큰 격차 표현)
+new Chart(document.getElementById('chart1'), {
+  type: 'bar',
+  data: {
+    labels: ['CTR (%)', 'CVR (%)', 'ROAS (%)', '결제(건)'],
+    datasets: [
+      { label: '상반기', data: [8.10, 0.21, 55.5, 7], backgroundColor: '#c9c9e0' },
+      { label: '하반기', data: [15.42, 2.77, 2032.7, 325], backgroundColor: '#3b3bff' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y: { type: 'logarithmic', ticks: { callback: v => v } }
+    }
+  }
+});
+
+// 02 월별 CVR 추이 (퍼널/전환 개선)
+new Chart(document.getElementById('chart2'), {
+  type: 'line',
+  data: {
+    labels: ['25.7', '25.8', '25.9', '25.10', '25.11', '25.12', '26.1'],
+    datasets: [{
+      label: '월별 CVR (%)',
+      data: [0.46, 0, 2.24, 2.42, 4.46, 2.43, 7.05],
+      borderColor: '#6b4de6',
+      backgroundColor: 'rgba(107,77,230,0.15)',
+      tension: 0.35,
+      fill: true,
+      pointRadius: 5,
+      pointBackgroundColor: '#6b4de6'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => c.parsed.y + '%' } }
+    },
+    scales: { y: { beginAtZero: true, ticks: { callback: v => v + '%' } } }
+  }
+});
+
+// 03 도입 전/후 매출·CVR
+new Chart(document.getElementById('chart3'), {
+  type: 'bar',
+  data: {
+    labels: ['도입 전 (8–10월)', '도입 후 (11월–)'],
+    datasets: [
+      {
+        label: 'CRM 매출 (만원)',
+        data: [793, 4584],
+        backgroundColor: '#3b3bff',
+        yAxisID: 'y'
+      },
+      {
+        label: '평균 CVR (%)',
+        data: [1.5, 4.6],
+        backgroundColor: '#e63d82',
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y: { type: 'linear', position: 'left', title: { display: true, text: '매출 (만원)' } },
+      y1: { type: 'linear', position: 'right', title: { display: true, text: 'CVR (%)' }, grid: { drawOnChartArea: false } }
+    }
+  }
+});
+
+// 04 프로모션 하이라이트 (최대 CVR 비교)
+new Chart(document.getElementById('chart4'), {
+  type: 'bar',
+  data: {
+    labels: ['업계 평균', 'RED FRIDAY', 'OFFDAY', '1월 최고'],
+    datasets: [{
+      label: '최대 CVR (%)',
+      data: [3, 14, 23.8, 7.05],
+      backgroundColor: ['#c9c9e0', '#e63d82', '#6b4de6', '#3b3bff'],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { ticks: { callback: v => v + '%' } } }
+  }
+});
+</script>
+</body>
+</html>
